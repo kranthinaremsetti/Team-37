@@ -163,4 +163,8 @@ export const runStaticCheck = (repoPath) => {
     Object.values(metrics.layerCounts).filter(v => v > 0).length >= 2;
 
   return metrics;
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 13a94a6e413bd59e20c1eec07b1be97b95f259c9
