@@ -3,6 +3,7 @@ import { fetchRepoToTemp } from "../services/repoFetcherService.js";
 import { extractSnippets } from "../services/snippetExtractorService.js";
 import { runStaticCheck } from "../services/staticCheck.js";
 import { sendToFriendBackend } from "../services/friendBackendService.js";
+import { generateAsciiTree } from "../services/asciiTreeService.js";
 
 export async function analyzeRepo(req, res) {
   try {
@@ -21,9 +22,18 @@ export async function analyzeRepo(req, res) {
       branch: metadata.default_branch
     });
 
+    const commitCount = metadata.commits ? metadata.commits.length : 0;
+    const contributorCount = metadata.contributors ? metadata.contributors.length : 0;
+
+    const contributorsList = (metadata.contributors || []).map(c => ({
+      login: c.login,
+      contributions: c.contributions
+    }));
+
     // 3️⃣ Static analysis
-    const snippets = extractSnippets(repoPath).slice(0, 3); // limit size
+    const snippets = extractSnippets(repoPath);
     const staticMetrics = runStaticCheck(repoPath);
+    const asciiTree = generateAsciiTree(repoPath);
 
     // 4️⃣ NORMALIZED worker_json (IMPORTANT)
     const workerJson = {
@@ -52,16 +62,29 @@ export async function analyzeRepo(req, res) {
       },
       repoPath,
       snippets,
-      staticMetrics
+      staticMetrics,
+      structure: {
+      ascii_tree: asciiTree
+      }
     };
 
     // 5️⃣ Send to FastAPI
     const friendReport = await sendToFriendBackend(workerJson);
 
-    // 6️⃣ Final response
-    return res.json({
-      friend_report: friendReport
-    });
+        // 6️⃣ Final response
+        return res.json({
+            languages: metadata.languages || {},
+             structure: {
+              ascii_tree: asciiTree
+            },
+            stats: {
+              commitCount,
+              contributorCount
+            },
+            contributors: contributorsList,
+            friend_report: friendReport
+        });
+
 
   } catch (err) {
     console.error("Analyze error:", err.message || err);
