@@ -2,6 +2,7 @@ import express from "express";
 import analyzeRouter from "./src/routes/analyzeRouter.js";
 import dotenv from "dotenv";
 import cors from "cors";
+import batchAnalyzeRoutes from "./src/routes/batchAnalyzeRoutes.js";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(
     origin: "*", // allow all origins for now (hackathon-safe)
   })
 );
+
+app.use("/api", batchAnalyzeRoutes);
 
 app.use(express.json());
 
