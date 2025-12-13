@@ -10,7 +10,7 @@ if not api_key or api_key == "your_gemini_api_key_here":
 
 genai.configure(api_key=api_key)
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel("gemini-2.5-pro")
 
 async def call_llm(prompt: str):
     response = model.generate_content(

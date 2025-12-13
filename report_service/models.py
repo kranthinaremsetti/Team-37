@@ -71,7 +71,7 @@ class FinalReport(BaseModel):
     evaluation: List[EvaluationItem]
     final_weighted_score: float
     viva_questions: List[str]
-    final_verdict: str
+    final_verdict: Optional[str] = None
 
 class ReportRequest(BaseModel):
     worker_json: WorkerInput

@@ -9,7 +9,6 @@ from processors.strengths import generate_strengths
 from processors.weaknesses import generate_weaknesses
 from processors.scoring import generate_evaluation
 from processors.viva import generate_viva_questions
-from processors.verdict import generate_verdict
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,7 +23,7 @@ async def generate_report(payload: ReportRequest):
     # 1. Generate each section independently
     problem_statement = await generate_problem_statement(worker_json)
     solution_overview = await generate_solution_overview(worker_json)
-    relevance = await generate_relevance(worker_json)
+    relevance = await generate_relevance(worker_json, problem_statement)
     codebase_structure = await generate_codebase_structure(worker_json)
     concept_mastery = await generate_concept_mastery(worker_json)
     strengths = await generate_strengths(worker_json)
@@ -35,8 +34,6 @@ async def generate_report(payload: ReportRequest):
     )
 
     viva_questions = await generate_viva_questions(worker_json)
-    final_verdict = await generate_verdict(final_score, strengths, weaknesses)
-
     # 2. Return final structured report
     return FinalReport(
         problem_statement=problem_statement,
@@ -48,6 +45,5 @@ async def generate_report(payload: ReportRequest):
         weaknesses=weaknesses,
         evaluation=evaluation,
         final_weighted_score=final_score,
-        viva_questions=viva_questions,
-        final_verdict=final_verdict
+        viva_questions=viva_questions
     )

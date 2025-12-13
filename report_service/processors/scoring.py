@@ -4,34 +4,37 @@ from models import EvaluationItem
 
 async def generate_evaluation(worker, rubric, strengths, weaknesses):
 
-    prompt = f"""
-    Evaluate the project using this rubric:
+    prompt = f"""You must follow these rules strictly:
+1. Base all scores and observations ONLY on the provided strengths, weaknesses, and observable evidence from the project.
+2. Do NOT assume or imagine features or qualities not supported by the data.
+3. If a criterion cannot be evaluated due to insufficient evidence, assign:
+   "score": 50
+   "observations": "Not enough information to fully evaluate this criterion."
+4. AI Utilization must score low if there is no visible AI-related code.
+5. Output MUST be a valid JSON list matching the exact schema shown.
+6. Tone must remain concise, professional, and judge-friendly.
 
-    {rubric.dict()}
+DATA:
+Rubric: {rubric.dict()}
+Strengths: {strengths}
+Weaknesses: {weaknesses}
 
-    For each criterion:
-    - observations
-    - strengths
-    - weaknesses
-    - score (0–100)
+TASK:
+For EACH criterion in the rubric, produce an object:
 
-    Output ONLY JSON list.
+{{
+  "criterion": "<name>",
+  "weight": <weight>,
+  "score": <0-100>,
+  "observations": "<2–3 sentences>",
+  "strengths": "<specific strengths for this criterion>",
+  "weaknesses": "<specific weaknesses for this criterion>"
+}}
 
-    Example:
-    [
-      {{
-        "criterion": "Innovation",
-        "weight": 25,
-        "score": 80,
-        "observations": "text",
-        "strengths": "text",
-        "weaknesses": "text"
-      }}
-    ]
+Scoring must be strictly grounded in strengths and weaknesses. No hallucinations.
 
-    Use context:
-    Strengths: {strengths}
-    Weaknesses: {weaknesses}
+OUTPUT:
+A JSON list ONLY. No extra text.
     """
     raw = await call_llm(prompt)
     evaluation_list = extract_json(raw)
