@@ -6,23 +6,23 @@ async def generate_relevance(worker, problem_statement):
 1. Base your evaluation ONLY on the problem statement and the observable evidence provided below.
 2. Do NOT assume or imagine features, goals, or functionality not clearly supported by the data.
 3. If the problem statement is "Not enough information to determine the problem statement.", then output:
-   {
+   {{{{
      "relevance_score": 50,
      "explanation": "Not enough information to determine relevance."
-   }
+   }}}}
 4. Tone must be concise, professional, and judge-friendly.
 5. Output MUST be valid JSON with exactly these two fields:
-   {
+   {{{{
      "relevance_score": <0–100>,
      "explanation": "<2–3 sentences>"
-   }
+   }}}}
 
 DATA:
-Problem Statement: {{problem_statement}}
-Commit Messages: {{[c.message for c in worker.metadata.commits]}}
-Snippets: {{worker.snippets}}
-Entry Files: {{worker.staticMetrics.entryFiles}}
-Has README: {{worker.staticMetrics.hasReadme}}
+Problem Statement: {problem_statement}
+Commit Messages: {[c.message for c in worker.metadata.commits]}
+Snippets: {worker.snippets}
+Entry Files: {worker.staticMetrics.entryFiles}
+Has README: {worker.staticMetrics.hasReadme}
 
 TASK:
 Evaluate how well the implementation aligns with the inferred problem based strictly on:
