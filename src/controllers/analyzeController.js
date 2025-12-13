@@ -1,5 +1,6 @@
 import { getRepoMetadata } from "../services/githubService.js";
 import { fetchRepoToTemp } from "../services/repoFetcherService.js";
+import { extractSnippets } from "../services/snippetExtractorService.js";
 
 export async function analyzeRepo(req, res) {
     try{
@@ -14,7 +15,10 @@ export async function analyzeRepo(req, res) {
         repo: metadata.name,
         branch: metadata.default_branch
         });
-        return res.json({ success: true, metadata, repoPath });
+
+        const snippets = extractSnippets(repoPath);
+
+        return res.json({ success: true, metadata, repoPath,snippets });
 
     }catch(error) {
         console.error("Error analyzing repository:", error);
