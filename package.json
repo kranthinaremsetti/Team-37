@@ -1,0 +1,28 @@
+{
+  "name": "team-37",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/kranthinaremsetti/Team-37#readme",
+  "bugs": {
+    "url": "https://github.com/kranthinaremsetti/Team-37/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kranthinaremsetti/Team-37.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "unzipper": "^0.12.3"
+  }
+}
