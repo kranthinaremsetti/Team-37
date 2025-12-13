@@ -64,7 +64,6 @@ class FinalReport(BaseModel):
     problem_statement: str
     solution_overview: str
     relevance: str
-    codebase_structure: str
     concept_mastery: str
     strengths: List[str]
     weaknesses: List[str]

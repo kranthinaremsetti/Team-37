@@ -31,10 +31,10 @@ Evaluate how well the implementation aligns with the inferred problem based stri
 - commit intent
 - presence or absence of documentation
 
-Assign a relevance score either High,Medium or Low mapped to 0–100 scale:
+Assign a relevance score either High,Medium or Low using 0–100 scale:
 - High Relevance: 80–100
 - Medium Relevance: 50–79
-- Low Relevance: 0–49s
+- Low Relevance: 0–49
 Write a short 2–3 sentence explanation of the reasoning behind the score.
 
     """
