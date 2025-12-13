@@ -1,6 +1,7 @@
 import { getRepoMetadata } from "../services/githubService.js";
 import { fetchRepoToTemp } from "../services/repoFetcherService.js";
 import { extractSnippets } from "../services/snippetExtractorService.js";
+import { runStaticCheck } from "../services/staticCheck.js";
 
 export async function analyzeRepo(req, res) {
     try{
@@ -17,8 +18,9 @@ export async function analyzeRepo(req, res) {
         });
 
         const snippets = extractSnippets(repoPath);
+        const staticMetrics = runStaticCheck(repoPath);
 
-        return res.json({ success: true, metadata, repoPath,snippets });
+        return res.json({ success: true, metadata, repoPath,snippets, staticMetrics });
 
     }catch(error) {
         console.error("Error analyzing repository:", error);
