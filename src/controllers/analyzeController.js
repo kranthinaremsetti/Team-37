@@ -22,10 +22,14 @@ export async function analyzeRepo(req, res) {
 
         return res.json({ success: true, metadata, repoPath,snippets, staticMetrics });
 
-    }catch(error) {
-        console.error("Error analyzing repository:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
+    }catch (error) {
+  console.error("Error analyzing repository:", error);
+
+  return res.status(500).json({
+    success: false,
+    error: error.message || "Internal Server Error"
+  });
+}
 }
 
 // repoPath → "temp/job-xxxxx/repo"
