@@ -31,23 +31,8 @@ export async function analyzeRepo(req, res) {
       staticMetrics
     };
 
-    const juryRubric = {
-      criteria: [
-        { name: "Innovation", weight: 25 },
-        { name: "Technical Implementation", weight: 25 },
-        { name: "AI Utilization", weight: 25 },
-        { name: "Impact & Expandability", weight: 15 },
-        { name: "Presentation", weight: 10 }
-      ]
-    };
-
-    return res.json({
-      worker_json: workerJson,
-      jury_rubric: juryRubric
-    });
-
-  } catch (error) {
-    console.error("Error analyzing repository:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
+    }catch(error) {
+        console.error("Error analyzing repository:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 }
