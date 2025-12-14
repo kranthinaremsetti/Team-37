@@ -11,9 +11,9 @@ async def generate_solution_overview(worker):
         5. Output ONLY a 3–4 sentence solution overview (no headings, no extra commentary).
 
         DATA:
-        Backend / Entry Files: {{worker.staticMetrics.entryFiles}}
-        Snippets: {{worker.snippets}}
-        Commit Messages: {{[c.message for c in worker.metadata.commits]}}
+        Backend / Entry Files: {worker.staticMetrics.entryFiles}
+        Snippets: {worker.snippets}
+        Commit Messages: {[c.message for c in worker.metadata.commits]}
 
         TASK:
         Summarize how the system technically works based strictly on the visible code structure, entry points, routes referenced in snippets, and commit patterns. Focus on what can be confidently observed (e.g., frameworks used, API mounting, frontend initialization).
