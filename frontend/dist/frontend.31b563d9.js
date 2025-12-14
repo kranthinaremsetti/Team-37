@@ -25013,10 +25013,14 @@ var _vivaQuestions = require("./components/VivaQuestions");
 var _vivaQuestionsDefault = parcelHelpers.interopDefault(_vivaQuestions);
 var _gauge = require("./components/Gauge");
 var _gaugeDefault = parcelHelpers.interopDefault(_gauge);
+var _batchUpload = require("./components/BatchUpload");
+var _batchUploadDefault = parcelHelpers.interopDefault(_batchUpload);
 var _s = $RefreshSig$();
 function App() {
     _s();
+    const [activeTab, setActiveTab] = (0, _react.useState)("single"); // 'single', 'batch', or 'view'
     const [url, setUrl] = (0, _react.useState)("");
+    const [teamName, setTeamName] = (0, _react.useState)("");
     const [data, setData] = (0, _react.useState)(null);
     const [loading, setLoading] = (0, _react.useState)(false);
     const [error, setError] = (0, _react.useState)(null);
@@ -25032,264 +25036,632 @@ function App() {
             setLoading(false);
         }
     };
+    const handleFetchTeamReport = async ()=>{
+        if (!teamName.trim()) {
+            setError("Please enter a team name");
+            return;
+        }
+        setLoading(true);
+        setError(null);
+        setData(null);
+        try {
+            const response = await fetch(`http://localhost:3000/api/teams/${encodeURIComponent(teamName)}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Team not found");
+            }
+            const teamData = await response.json();
+            setData(teamData);
+        } catch (err) {
+            setError(err.message || "Something went wrong");
+        } finally{
+            setLoading(false);
+        }
+    };
     return /* 🔥 GRADIENT BACKGROUND APPLIED HERE */ /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "min-h-screen bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a] text-white",
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _headerDefault.default), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 36,
+                lineNumber: 66,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 className: "max-w-6xl mx-auto px-6 py-8",
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                        className: "bg-[#020617]/80 border border-white/10 p-5 rounded-xl shadow mb-8",
-                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                            className: "flex gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                                    className: "flex-1 bg-transparent border border-white/20 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:border-blue-500",
-                                    placeholder: "Enter GitHub repository URL",
-                                    value: url,
-                                    onChange: (e)=>setUrl(e.target.value)
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 42,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                                    onClick: handleAnalyze,
-                                    className: "bg-blue-600 hover:bg-blue-500 transition px-6 py-2 rounded font-semibold",
-                                    children: "Analyze"
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 48,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "src/App.js",
-                            lineNumber: 41,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 40,
-                        columnNumber: 9
-                    }, this),
-                    loading && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                        className: "text-center text-gray-300",
-                        children: "Analyzing repository\u2026"
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 58,
-                        columnNumber: 11
-                    }, this),
-                    error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                        className: "text-center text-red-400",
-                        children: error
-                    }, void 0, false, {
-                        fileName: "src/App.js",
-                        lineNumber: 62,
-                        columnNumber: 11
-                    }, this),
-                    data && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                        className: "flex gap-2 mb-6",
                         children: [
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Languages Used",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _languagesBarDefault.default), {
-                                    languages: data.languages
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 69,
-                                    columnNumber: 15
-                                }, this)
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                onClick: ()=>{
+                                    setActiveTab("single");
+                                    setData(null);
+                                    setError(null);
+                                },
+                                className: `px-6 py-2 rounded-lg font-semibold transition ${activeTab === "single" ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`,
+                                children: "Single Repository"
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 68,
-                                columnNumber: 13
+                                lineNumber: 71,
+                                columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Contributors vs Commits",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _contributorsChartDefault.default), {
-                                    contributors: data.contributors
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 73,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 72,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Project Structure",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _structureTreeDefault.default), {
-                                    tree: data.structure?.ascii_tree
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 77,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 76,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Problem Statement",
-                                children: data.friend_report.problem_statement
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                onClick: ()=>{
+                                    setActiveTab("batch");
+                                    setData(null);
+                                    setError(null);
+                                },
+                                className: `px-6 py-2 rounded-lg font-semibold transition ${activeTab === "batch" ? "bg-green-600 text-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`,
+                                children: "Batch Upload (CSV)"
                             }, void 0, false, {
                                 fileName: "src/App.js",
                                 lineNumber: 81,
-                                columnNumber: 13
+                                columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Solution Overview",
-                                children: data.friend_report.solution_overview
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                onClick: ()=>{
+                                    setActiveTab("view");
+                                    setData(null);
+                                    setError(null);
+                                },
+                                className: `px-6 py-2 rounded-lg font-semibold transition ${activeTab === "view" ? "bg-purple-600 text-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`,
+                                children: "View Team Report"
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 85,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Relevance",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
-                                    label: "Relevance",
-                                    level: "high",
-                                    description: "Strong alignment between the problem statement and system architecture."
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 90,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 89,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Concept Mastery",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
-                                    label: "Concept Mastery",
-                                    level: "medium",
-                                    description: data.friend_report.concept_mastery
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 98,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 97,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Strengths",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                                    className: "list-disc ml-5 space-y-1",
-                                    children: data.friend_report.strengths.map((s, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                                            children: s
-                                        }, i, false, {
+                                lineNumber: 91,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/App.js",
+                        lineNumber: 70,
+                        columnNumber: 9
+                    }, this),
+                    activeTab === "single" && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "bg-[#020617]/80 border border-white/10 p-5 rounded-xl shadow mb-8",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                    className: "flex gap-4",
+                                    children: [
+                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                            className: "flex-1 bg-transparent border border-white/20 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:border-blue-500",
+                                            placeholder: "Enter GitHub repository URL",
+                                            value: url,
+                                            onChange: (e)=>setUrl(e.target.value)
+                                        }, void 0, false, {
                                             fileName: "src/App.js",
                                             lineNumber: 108,
-                                            columnNumber: 19
-                                        }, this))
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 106,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 105,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Weaknesses",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                                    className: "list-disc ml-5 space-y-1",
-                                    children: data.friend_report.weaknesses.map((w, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                                            children: w
-                                        }, i, false, {
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                            onClick: handleAnalyze,
+                                            className: "bg-blue-600 hover:bg-blue-500 transition px-6 py-2 rounded font-semibold",
+                                            children: "Analyze"
+                                        }, void 0, false, {
                                             fileName: "src/App.js",
-                                            lineNumber: 116,
-                                            columnNumber: 19
-                                        }, this))
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 114,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 113,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Evaluation",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _evaluationTableDefault.default), {
-                                    evaluation: data.friend_report.evaluation
-                                }, void 0, false, {
-                                    fileName: "src/App.js",
-                                    lineNumber: 122,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 121,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Final Score",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                                    className: "text-4xl font-bold text-blue-400 text-center",
-                                    children: [
-                                        data.friend_report.final_weighted_score,
-                                        " / 100"
+                                            lineNumber: 114,
+                                            columnNumber: 17
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "src/App.js",
-                                    lineNumber: 126,
+                                    lineNumber: 107,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 125,
+                                lineNumber: 106,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Viva Questions",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vivaQuestionsDefault.default), {
-                                    questions: data.friend_report.viva_questions
-                                }, void 0, false, {
+                            loading && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "text-center text-gray-300",
+                                children: "Analyzing repository\u2026"
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 124,
+                                columnNumber: 15
+                            }, this),
+                            error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "text-center text-red-400",
+                                children: error
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 128,
+                                columnNumber: 15
+                            }, this),
+                            data && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Languages Used",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _languagesBarDefault.default), {
+                                            languages: data.languages
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 135,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 134,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Contributors vs Commits",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _contributorsChartDefault.default), {
+                                            contributors: data.contributors
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 139,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 138,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Project Structure",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _structureTreeDefault.default), {
+                                            tree: data.structure?.ascii_tree
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 143,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 142,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Problem Statement",
+                                        children: data.friend_report.problem_statement
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 147,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Solution Overview",
+                                        children: data.friend_report.solution_overview
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 151,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Relevance",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                            label: "Relevance",
+                                            level: "high",
+                                            description: "Strong alignment between the problem statement and system architecture."
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 156,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 155,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Concept Mastery",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                            label: "Concept Mastery",
+                                            level: "medium",
+                                            description: data.friend_report.concept_mastery
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 164,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 163,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Strengths",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
+                                            className: "list-disc ml-5 space-y-1",
+                                            children: data.friend_report.strengths.map((s, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                                                    children: s
+                                                }, i, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 174,
+                                                    columnNumber: 23
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 172,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 171,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Weaknesses",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
+                                            className: "list-disc ml-5 space-y-1",
+                                            children: data.friend_report.weaknesses.map((w, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                                                    children: w
+                                                }, i, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 182,
+                                                    columnNumber: 23
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 180,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 179,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Evaluation",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _evaluationTableDefault.default), {
+                                            evaluation: data.friend_report.evaluation
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 188,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 187,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Final Score",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                            className: "text-4xl font-bold text-blue-400 text-center",
+                                            children: [
+                                                data.friend_report.final_weighted_score,
+                                                " / 100"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 192,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 191,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Viva Questions",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vivaQuestionsDefault.default), {
+                                            questions: data.friend_report.viva_questions
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 198,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 197,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true)
+                        ]
+                    }, void 0, true),
+                    activeTab === "batch" && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _batchUploadDefault.default), {}, void 0, false, {
+                        fileName: "src/App.js",
+                        lineNumber: 206,
+                        columnNumber: 35
+                    }, this),
+                    activeTab === "view" && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "bg-[#020617]/80 border border-white/10 p-5 rounded-xl shadow mb-8",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                    className: "flex gap-4",
+                                    children: [
+                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                            className: "flex-1 bg-transparent border border-white/20 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-500",
+                                            placeholder: "Enter team name (e.g., Team Alpha)",
+                                            value: teamName,
+                                            onChange: (e)=>setTeamName(e.target.value),
+                                            onKeyPress: (e)=>e.key === "Enter" && handleFetchTeamReport()
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 213,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                            onClick: handleFetchTeamReport,
+                                            className: "bg-purple-600 hover:bg-purple-500 transition px-6 py-2 rounded font-semibold",
+                                            children: "Fetch Report"
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 220,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "src/App.js",
-                                    lineNumber: 132,
+                                    lineNumber: 212,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 131,
+                                lineNumber: 211,
                                 columnNumber: 13
-                            }, this)
+                            }, this),
+                            loading && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "text-center text-gray-300",
+                                children: "Fetching team report\u2026"
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 230,
+                                columnNumber: 15
+                            }, this),
+                            error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "text-center p-4 bg-red-900/20 border border-red-500/30 rounded text-red-400",
+                                children: error
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 234,
+                                columnNumber: 15
+                            }, this),
+                            data && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                        className: "bg-[#020617]/80 border border-white/10 p-5 rounded-xl shadow mb-6",
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                                                className: "text-2xl font-bold text-purple-400 mb-2",
+                                                children: data.team_name
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 243,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                                className: "text-gray-400 text-sm",
+                                                children: [
+                                                    "Batch ID: ",
+                                                    data.batch_id
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 244,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                                className: "text-gray-400 text-sm",
+                                                children: [
+                                                    "Analyzed: ",
+                                                    new Date(data.created_at).toLocaleString()
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 245,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 242,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Languages Used",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _languagesBarDefault.default), {
+                                            languages: data.languages
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 250,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 249,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Contributors vs Commits",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _contributorsChartDefault.default), {
+                                            contributors: data.contributors
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 254,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 253,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                        title: "Project Structure",
+                                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _structureTreeDefault.default), {
+                                            tree: data.structure?.ascii_tree
+                                        }, void 0, false, {
+                                            fileName: "src/App.js",
+                                            lineNumber: 258,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 257,
+                                        columnNumber: 17
+                                    }, this),
+                                    data.friend_report && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Problem Statement",
+                                                children: data.friend_report.problem_statement
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 264,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Solution Overview",
+                                                children: data.friend_report.solution_overview
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 268,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Relevance",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                                    label: "Relevance",
+                                                    level: "high",
+                                                    description: data.friend_report.relevance
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 273,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 272,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Concept Mastery",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                                    label: "Concept Mastery",
+                                                    level: "medium",
+                                                    description: data.friend_report.concept_mastery
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 281,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 280,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Strengths",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
+                                                    className: "list-disc ml-5 space-y-1",
+                                                    children: data.friend_report.strengths?.map((s, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                                                            children: s
+                                                        }, i, false, {
+                                                            fileName: "src/App.js",
+                                                            lineNumber: 291,
+                                                            columnNumber: 27
+                                                        }, this))
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 289,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 288,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Weaknesses",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
+                                                    className: "list-disc ml-5 space-y-1",
+                                                    children: data.friend_report.weaknesses?.map((w, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                                                            children: w
+                                                        }, i, false, {
+                                                            fileName: "src/App.js",
+                                                            lineNumber: 299,
+                                                            columnNumber: 27
+                                                        }, this))
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 297,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 296,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Evaluation",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _evaluationTableDefault.default), {
+                                                    evaluation: data.friend_report.evaluation
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 305,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 304,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Final Score",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                                    className: "text-4xl font-bold text-purple-400 text-center",
+                                                    children: [
+                                                        data.friend_report.final_weighted_score,
+                                                        " / 100"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 309,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 308,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                                title: "Viva Questions",
+                                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vivaQuestionsDefault.default), {
+                                                    questions: data.friend_report.viva_questions
+                                                }, void 0, false, {
+                                                    fileName: "src/App.js",
+                                                    lineNumber: 315,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "src/App.js",
+                                                lineNumber: 314,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true),
+                                    !data.friend_report && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                        className: "text-center p-4 bg-yellow-900/20 border border-yellow-500/30 rounded text-yellow-400",
+                                        children: "\u26A0\uFE0F AI report not available for this team"
+                                    }, void 0, false, {
+                                        fileName: "src/App.js",
+                                        lineNumber: 321,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, void 0, true)
                         ]
                     }, void 0, true)
                 ]
             }, void 0, true, {
                 fileName: "src/App.js",
-                lineNumber: 38,
+                lineNumber: 68,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 34,
+        lineNumber: 64,
         columnNumber: 5
     }, this);
 }
-_s(App, "PGG/zeIY81kJjj9wIv2qXa74gbc=");
+_s(App, "l1PLPH9x3aubjlcCFMGWhQe/GKg=");
 _c = App;
 var _c;
 $RefreshReg$(_c, "App");
@@ -25299,7 +25671,7 @@ $RefreshReg$(_c, "App");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./api/analyze":"4djzZ","./components/Header":"3PJ6N","./components/StructureTree":"fZGPc","./components/ReportSection":"46UIJ","./components/EvaluationTable":"6pIK1","./components/LanguagesBar":"le3NI","./components/VivaQuestions":"gYusl","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/ContributorsChart":"1t3vU","./components/Gauge":"f6N0W"}],"4djzZ":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./api/analyze":"4djzZ","./components/Header":"3PJ6N","./components/StructureTree":"fZGPc","./components/ReportSection":"46UIJ","./components/EvaluationTable":"6pIK1","./components/LanguagesBar":"le3NI","./components/VivaQuestions":"gYusl","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/ContributorsChart":"1t3vU","./components/Gauge":"f6N0W","./components/BatchUpload":"LV6q9"}],"4djzZ":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "analyzeRepo", ()=>analyzeRepo);
@@ -28238,6 +28610,302 @@ $RefreshReg$(_c, "Gauge");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"irmnC":[function() {},{}]},["5j6Kf","a0t4e"], "a0t4e", "parcelRequire10c2", {}, null, null, "http://localhost:1234")
+},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"LV6q9":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$e499 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$e499.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$e499.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>BatchUpload);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+function BatchUpload() {
+    _s();
+    const [file, setFile] = (0, _react.useState)(null);
+    const [loading, setLoading] = (0, _react.useState)(false);
+    const [result, setResult] = (0, _react.useState)(null);
+    const [error, setError] = (0, _react.useState)(null);
+    const handleFileChange = (e)=>{
+        setFile(e.target.files[0]);
+        setError(null);
+        setResult(null);
+    };
+    const handleUpload = async ()=>{
+        if (!file) {
+            setError("Please select a CSV file");
+            return;
+        }
+        setLoading(true);
+        setError(null);
+        setResult(null);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            const response = await fetch("http://localhost:3000/api/analyze/batch", {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) throw new Error("Upload failed");
+            const data = await response.json();
+            setResult(data);
+        } catch (err) {
+            setError(err.message || "Something went wrong");
+        } finally{
+            setLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "bg-[#020617]/80 border border-white/10 p-6 rounded-xl shadow mb-8",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+                className: "text-xl font-semibold mb-4 text-blue-400",
+                children: "Batch Analysis"
+            }, void 0, false, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 49,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                className: "text-gray-400 text-sm mb-4",
+                children: [
+                    "Upload a CSV file with columns: ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("code", {
+                        className: "bg-gray-800 px-2 py-1 rounded",
+                        children: "teamName"
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 51,
+                        columnNumber: 41
+                    }, this),
+                    " and ",
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("code", {
+                        className: "bg-gray-800 px-2 py-1 rounded",
+                        children: "repoUrl"
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 51,
+                        columnNumber: 109
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 50,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "flex gap-4 items-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                        className: "flex-1 cursor-pointer",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "bg-transparent border border-white/20 px-4 py-2 rounded text-gray-400 hover:border-blue-500 transition",
+                                children: file ? file.name : "Choose CSV file..."
+                            }, void 0, false, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 56,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                type: "file",
+                                accept: ".csv",
+                                onChange: handleFileChange,
+                                className: "hidden"
+                            }, void 0, false, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 59,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 55,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                        onClick: handleUpload,
+                        disabled: !file || loading,
+                        className: "bg-green-600 hover:bg-green-500 transition px-6 py-2 rounded font-semibold disabled:bg-gray-600 disabled:cursor-not-allowed",
+                        children: loading ? "Uploading..." : "Upload & Analyze"
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 66,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 54,
+                columnNumber: 7
+            }, this),
+            loading && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "mt-4 text-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "text-blue-400",
+                        children: "\u23F3 Processing batch analysis..."
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 77,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "text-gray-500 text-sm mt-2",
+                        children: "This may take a few minutes"
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 78,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 76,
+                columnNumber: 9
+            }, this),
+            error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "mt-4 p-4 bg-red-900/20 border border-red-500/30 rounded text-red-400",
+                children: [
+                    "\u274C ",
+                    error
+                ]
+            }, void 0, true, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 83,
+                columnNumber: 9
+            }, this),
+            result && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "mt-4 p-4 bg-green-900/20 border border-green-500/30 rounded",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
+                        className: "text-green-400 font-semibold mb-2",
+                        children: "\u2705 Batch Analysis Complete!"
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 90,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "text-gray-300 mb-2",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                children: "Batch ID:"
+                            }, void 0, false, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 92,
+                                columnNumber: 13
+                            }, this),
+                            " ",
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("code", {
+                                className: "bg-gray-800 px-2 py-1 rounded",
+                                children: result.batch_id
+                            }, void 0, false, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 92,
+                                columnNumber: 40
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 91,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "text-gray-300 mb-3",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                children: "Teams Processed:"
+                            }, void 0, false, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 95,
+                                columnNumber: 13
+                            }, this),
+                            " ",
+                            result.total_teams
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 94,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "space-y-2",
+                        children: result.results?.map((team, idx)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: `p-2 rounded ${team.status === "success" ? "bg-green-800/30 border border-green-600/30" : "bg-red-800/30 border border-red-600/30"}`,
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        className: "font-medium",
+                                        children: team.team_name
+                                    }, void 0, false, {
+                                        fileName: "src/components/BatchUpload.js",
+                                        lineNumber: 108,
+                                        columnNumber: 17
+                                    }, this),
+                                    team.status === "success" ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        className: "ml-2 text-green-400",
+                                        children: "\u2713 Saved to database"
+                                    }, void 0, false, {
+                                        fileName: "src/components/BatchUpload.js",
+                                        lineNumber: 110,
+                                        columnNumber: 19
+                                    }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        className: "ml-2 text-red-400",
+                                        children: [
+                                            "\u2717 ",
+                                            team.error
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/components/BatchUpload.js",
+                                        lineNumber: 112,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, idx, true, {
+                                fileName: "src/components/BatchUpload.js",
+                                lineNumber: 100,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 98,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "text-gray-400 text-sm mt-4",
+                        children: "You can now query individual team reports using the batch ID or team name."
+                    }, void 0, false, {
+                        fileName: "src/components/BatchUpload.js",
+                        lineNumber: 118,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/BatchUpload.js",
+                lineNumber: 89,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/BatchUpload.js",
+        lineNumber: 48,
+        columnNumber: 5
+    }, this);
+}
+_s(BatchUpload, "0UH1bohqyH65t/15HWJaUydYzI0=");
+_c = BatchUpload;
+var _c;
+$RefreshReg$(_c, "BatchUpload");
+
+  $parcel$ReactRefreshHelpers$e499.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"irmnC":[function() {},{}]},["5j6Kf","a0t4e"], "a0t4e", "parcelRequire10c2", {}, null, null, "http://localhost:1234")
 
 //# sourceMappingURL=frontend.31b563d9.js.map
