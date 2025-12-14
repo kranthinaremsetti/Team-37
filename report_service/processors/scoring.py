@@ -10,7 +10,12 @@ async def generate_evaluation(worker, rubric, strengths, weaknesses):
 3. If a criterion cannot be evaluated due to insufficient evidence, assign:
    "score": 50
    "observations": "Not enough information to fully evaluate this criterion."
-4. AI Utilization must score low if there is no visible AI-related code.
+4. AI/ML Utilization scoring - CHECK FOR THESE PATTERNS:
+   - HIGH (80-100): google.generativeai, openai imports + LLM calls + prompt engineering
+   - MEDIUM (60-79): AI library imports + basic API calls
+   - LOW (40-59): AI library present but minimal usage
+   - NONE (0-20): No AI/ML imports or calls visible
+   IMPORTANT: Check strengths list for "AI integration", "LLM", "Gemini", "OpenAI" mentions!
 5. Output MUST be a valid JSON list matching the exact schema shown.
 6. Tone must remain concise, professional, and judge-friendly.
 
