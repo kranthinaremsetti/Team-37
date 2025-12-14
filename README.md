@@ -263,7 +263,7 @@ Team-37/
    Create `.env` file in root directory with:
    ```
    GEMINI_API_KEY=your_gemini_api_key_here
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name
+   MONGODB_URI=link
    PORT=3000
    ```
 
