@@ -24999,22 +24999,20 @@ var _react = require("react");
 var _analyze = require("./api/analyze");
 var _header = require("./components/Header");
 var _headerDefault = parcelHelpers.interopDefault(_header);
-var _repoOverview = require("./components/RepoOverview");
-var _repoOverviewDefault = parcelHelpers.interopDefault(_repoOverview);
-var _structureTree = require("./components/StructureTree");
-var _structureTreeDefault = parcelHelpers.interopDefault(_structureTree);
 var _reportSection = require("./components/ReportSection");
 var _reportSectionDefault = parcelHelpers.interopDefault(_reportSection);
-var _codeSnippets = require("./components/CodeSnippets");
-var _codeSnippetsDefault = parcelHelpers.interopDefault(_codeSnippets);
+var _structureTree = require("./components/StructureTree");
+var _structureTreeDefault = parcelHelpers.interopDefault(_structureTree);
 var _evaluationTable = require("./components/EvaluationTable");
 var _evaluationTableDefault = parcelHelpers.interopDefault(_evaluationTable);
-var _contributorsList = require("./components/ContributorsList");
-var _contributorsListDefault = parcelHelpers.interopDefault(_contributorsList);
+var _contributorsChart = require("./components/ContributorsChart");
+var _contributorsChartDefault = parcelHelpers.interopDefault(_contributorsChart);
 var _languagesBar = require("./components/LanguagesBar");
 var _languagesBarDefault = parcelHelpers.interopDefault(_languagesBar);
 var _vivaQuestions = require("./components/VivaQuestions");
 var _vivaQuestionsDefault = parcelHelpers.interopDefault(_vivaQuestions);
+var _gauge = require("./components/Gauge");
+var _gaugeDefault = parcelHelpers.interopDefault(_gauge);
 var _s = $RefreshSig$();
 function App() {
     _s();
@@ -25029,117 +25027,93 @@ function App() {
             const res = await (0, _analyze.analyzeRepo)(url);
             setData(res);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || "Something went wrong");
         } finally{
             setLoading(false);
         }
     };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "min-h-screen bg-gray-100",
+    return /* 🔥 GRADIENT BACKGROUND APPLIED HERE */ /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "min-h-screen bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a] text-white",
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _headerDefault.default), {}, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 35,
+                lineNumber: 36,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "max-w-6xl mx-auto p-6",
+                className: "max-w-6xl mx-auto px-6 py-8",
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                        className: "bg-white p-4 rounded shadow mb-6",
-                        children: [
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
-                                className: "border p-2 w-3/4 rounded",
-                                placeholder: "Enter GitHub repository URL",
-                                value: url,
-                                onChange: (e)=>setUrl(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 40,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                                onClick: handleAnalyze,
-                                className: "ml-4 bg-blue-600 text-white px-4 py-2 rounded",
-                                children: "Analyze"
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 46,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                        className: "bg-[#020617]/80 border border-white/10 p-5 rounded-xl shadow mb-8",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                            className: "flex gap-4",
+                            children: [
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                    className: "flex-1 bg-transparent border border-white/20 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:border-blue-500",
+                                    placeholder: "Enter GitHub repository URL",
+                                    value: url,
+                                    onChange: (e)=>setUrl(e.target.value)
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 42,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                    onClick: handleAnalyze,
+                                    className: "bg-blue-600 hover:bg-blue-500 transition px-6 py-2 rounded font-semibold",
+                                    children: "Analyze"
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 48,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/App.js",
+                            lineNumber: 41,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 39,
+                        lineNumber: 40,
                         columnNumber: 9
                     }, this),
                     loading && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                        className: "text-center",
-                        children: "Analyzing\u2026"
+                        className: "text-center text-gray-300",
+                        children: "Analyzing repository\u2026"
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 54,
-                        columnNumber: 21
+                        lineNumber: 58,
+                        columnNumber: 11
                     }, this),
                     error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                        className: "text-red-600",
+                        className: "text-center text-red-400",
                         children: error
                     }, void 0, false, {
                         fileName: "src/App.js",
-                        lineNumber: 55,
-                        columnNumber: 19
+                        lineNumber: 62,
+                        columnNumber: 11
                     }, this),
                     data && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
                         children: [
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _repoOverviewDefault.default), {
-                                data: data
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 59,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _languagesBarDefault.default), {
-                                languages: data.languages
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 60,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _contributorsListDefault.default), {
-                                contributors: data.contributors
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 61,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _structureTreeDefault.default), {
-                                tree: data.structure?.ascii_tree
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 62,
-                                columnNumber: 13
-                            }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Problem Statement",
-                                children: data.friend_report.problem_statement
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 64,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Solution Overview",
-                                children: data.friend_report.solution_overview
+                                title: "Languages Used",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _languagesBarDefault.default), {
+                                    languages: data.languages
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 69,
+                                    columnNumber: 15
+                                }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
                                 lineNumber: 68,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Relevance",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("pre", {
-                                    className: "bg-gray-900 text-green-300 p-4 rounded text-sm overflow-auto",
-                                    children: data.friend_report.relevance
+                                title: "Contributors vs Commits",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _contributorsChartDefault.default), {
+                                    contributors: data.contributors
                                 }, void 0, false, {
                                     fileName: "src/App.js",
                                     lineNumber: 73,
@@ -25151,92 +25125,153 @@ function App() {
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
-                                title: "Concept Mastery",
-                                children: data.friend_report.concept_mastery
+                                title: "Project Structure",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _structureTreeDefault.default), {
+                                    tree: data.structure?.ascii_tree
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 77,
+                                    columnNumber: 15
+                                }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 78,
+                                lineNumber: 76,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Problem Statement",
+                                children: data.friend_report.problem_statement
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 81,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Solution Overview",
+                                children: data.friend_report.solution_overview
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 85,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Relevance",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                    label: "Relevance",
+                                    level: "high",
+                                    description: "Strong alignment between the problem statement and system architecture."
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 90,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 89,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Concept Mastery",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gaugeDefault.default), {
+                                    label: "Concept Mastery",
+                                    level: "medium",
+                                    description: data.friend_report.concept_mastery
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 98,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "src/App.js",
+                                lineNumber: 97,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
                                 title: "Strengths",
                                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                                    className: "list-disc ml-6",
+                                    className: "list-disc ml-5 space-y-1",
                                     children: data.friend_report.strengths.map((s, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
                                             children: s
                                         }, i, false, {
                                             fileName: "src/App.js",
-                                            lineNumber: 85,
+                                            lineNumber: 108,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "src/App.js",
-                                    lineNumber: 83,
+                                    lineNumber: 106,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 82,
+                                lineNumber: 105,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
                                 title: "Weaknesses",
                                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                                    className: "list-disc ml-6",
+                                    className: "list-disc ml-5 space-y-1",
                                     children: data.friend_report.weaknesses.map((w, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
                                             children: w
                                         }, i, false, {
                                             fileName: "src/App.js",
-                                            lineNumber: 93,
+                                            lineNumber: 116,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "src/App.js",
-                                    lineNumber: 91,
+                                    lineNumber: 114,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 90,
+                                lineNumber: 113,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _evaluationTableDefault.default), {
-                                evaluation: data.friend_report.evaluation
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Evaluation",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _evaluationTableDefault.default), {
+                                    evaluation: data.friend_report.evaluation
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 122,
+                                    columnNumber: 15
+                                }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 98,
+                                lineNumber: 121,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
                                 title: "Final Score",
                                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                                    className: "text-3xl font-bold text-blue-600",
+                                    className: "text-4xl font-bold text-blue-400 text-center",
                                     children: [
                                         data.friend_report.final_weighted_score,
                                         " / 100"
                                     ]
                                 }, void 0, true, {
                                     fileName: "src/App.js",
-                                    lineNumber: 101,
+                                    lineNumber: 126,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 100,
+                                lineNumber: 125,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vivaQuestionsDefault.default), {
-                                questions: data.friend_report.viva_questions
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reportSectionDefault.default), {
+                                title: "Viva Questions",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vivaQuestionsDefault.default), {
+                                    questions: data.friend_report.viva_questions
+                                }, void 0, false, {
+                                    fileName: "src/App.js",
+                                    lineNumber: 132,
+                                    columnNumber: 15
+                                }, this)
                             }, void 0, false, {
                                 fileName: "src/App.js",
-                                lineNumber: 106,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _codeSnippetsDefault.default), {
-                                snippets: data.codeSnippets || []
-                            }, void 0, false, {
-                                fileName: "src/App.js",
-                                lineNumber: 108,
+                                lineNumber: 131,
                                 columnNumber: 13
                             }, this)
                         ]
@@ -25244,7 +25279,7 @@ function App() {
                 ]
             }, void 0, true, {
                 fileName: "src/App.js",
-                lineNumber: 37,
+                lineNumber: 38,
                 columnNumber: 7
             }, this)
         ]
@@ -25264,7 +25299,7 @@ $RefreshReg$(_c, "App");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./api/analyze":"4djzZ","./components/Header":"3PJ6N","./components/RepoOverview":"2wNp4","./components/StructureTree":"fZGPc","./components/ReportSection":"46UIJ","./components/CodeSnippets":"2ioXI","./components/EvaluationTable":"6pIK1","./components/ContributorsList":"7I8yO","./components/LanguagesBar":"le3NI","./components/VivaQuestions":"gYusl","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"4djzZ":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./api/analyze":"4djzZ","./components/Header":"3PJ6N","./components/StructureTree":"fZGPc","./components/ReportSection":"46UIJ","./components/EvaluationTable":"6pIK1","./components/LanguagesBar":"le3NI","./components/VivaQuestions":"gYusl","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/ContributorsChart":"1t3vU","./components/Gauge":"f6N0W"}],"4djzZ":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "analyzeRepo", ()=>analyzeRepo);
@@ -27624,81 +27659,7 @@ function $da9882e673ac146b$var$ErrorOverlay() {
     return null;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2wNp4":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$b2d8 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$b2d8.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$b2d8.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>RepoOverview);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-function RepoOverview({ data }) {
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "bg-white p-4 rounded shadow mb-6",
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
-                className: "text-xl font-semibold mb-2",
-                children: "Repository Overview"
-            }, void 0, false, {
-                fileName: "src/components/RepoOverview.js",
-                lineNumber: 4,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Commits:"
-                    }, void 0, false, {
-                        fileName: "src/components/RepoOverview.js",
-                        lineNumber: 5,
-                        columnNumber: 10
-                    }, this),
-                    " ",
-                    data.stats.commitCount
-                ]
-            }, void 0, true, {
-                fileName: "src/components/RepoOverview.js",
-                lineNumber: 5,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                        children: "Contributors:"
-                    }, void 0, false, {
-                        fileName: "src/components/RepoOverview.js",
-                        lineNumber: 6,
-                        columnNumber: 10
-                    }, this),
-                    " ",
-                    data.stats.contributorCount
-                ]
-            }, void 0, true, {
-                fileName: "src/components/RepoOverview.js",
-                lineNumber: 6,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/components/RepoOverview.js",
-        lineNumber: 3,
-        columnNumber: 5
-    }, this);
-}
-_c = RepoOverview;
-var _c;
-$RefreshReg$(_c, "RepoOverview");
-
-  $parcel$ReactRefreshHelpers$b2d8.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"fZGPc":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"fZGPc":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$9fcf = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$9fcf.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -27759,33 +27720,63 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>ReportSection);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
 function ReportSection({ title, children }) {
+    _s();
+    const [open, setOpen] = (0, _react.useState)(false);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "bg-white p-4 rounded shadow mb-6",
+        className: "mb-6 rounded-xl border border-white/10 bg-[#020617]/80 shadow-lg",
         children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
-                className: "text-xl font-semibold mb-2",
-                children: title
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setOpen(!open),
+                className: "w-full flex justify-between items-center px-6 py-4 text-left",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                        className: "text-lg font-semibold text-white",
+                        children: title
+                    }, void 0, false, {
+                        fileName: "src/components/ReportSection.js",
+                        lineNumber: 13,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        className: "text-white text-xl",
+                        children: open ? "\u25B4" : "\u25BE"
+                    }, void 0, false, {
+                        fileName: "src/components/ReportSection.js",
+                        lineNumber: 16,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "src/components/ReportSection.js",
-                lineNumber: 4,
+                lineNumber: 9,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "text-gray-800",
-                children: children
+            open && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "px-6 pb-6",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "   bg-white    rounded-lg    p-5    text-gray-900    leading-relaxed   ",
+                    children: children
+                }, void 0, false, {
+                    fileName: "src/components/ReportSection.js",
+                    lineNumber: 24,
+                    columnNumber: 11
+                }, this)
             }, void 0, false, {
                 fileName: "src/components/ReportSection.js",
-                lineNumber: 5,
-                columnNumber: 7
+                lineNumber: 23,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/ReportSection.js",
-        lineNumber: 3,
+        lineNumber: 7,
         columnNumber: 5
     }, this);
 }
+_s(ReportSection, "xG1TONbKtDWtdOTrXaTAsNhPg/Q=");
 _c = ReportSection;
 var _c;
 $RefreshReg$(_c, "ReportSection");
@@ -27795,73 +27786,7 @@ $RefreshReg$(_c, "ReportSection");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"2ioXI":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$fcb7 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$fcb7.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$fcb7.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>CodeSnippets);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-function CodeSnippets({ snippets }) {
-    if (!snippets.length) return null;
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "bg-white p-4 rounded shadow mb-6",
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
-                className: "text-xl font-semibold mb-4",
-                children: "Important Code Snippets"
-            }, void 0, false, {
-                fileName: "src/components/CodeSnippets.js",
-                lineNumber: 6,
-                columnNumber: 7
-            }, this),
-            snippets.map((s, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                    className: "mb-4",
-                    children: [
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                            className: "text-sm font-semibold text-gray-700",
-                            children: s.file
-                        }, void 0, false, {
-                            fileName: "src/components/CodeSnippets.js",
-                            lineNumber: 10,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("pre", {
-                            className: "bg-gray-900 text-gray-100 p-3 rounded text-sm overflow-auto",
-                            children: s.code
-                        }, void 0, false, {
-                            fileName: "src/components/CodeSnippets.js",
-                            lineNumber: 11,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, i, true, {
-                    fileName: "src/components/CodeSnippets.js",
-                    lineNumber: 9,
-                    columnNumber: 9
-                }, this))
-        ]
-    }, void 0, true, {
-        fileName: "src/components/CodeSnippets.js",
-        lineNumber: 5,
-        columnNumber: 5
-    }, this);
-}
-_c = CodeSnippets;
-var _c;
-$RefreshReg$(_c, "CodeSnippets");
-
-  $parcel$ReactRefreshHelpers$fcb7.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"6pIK1":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","react":"jMk1U"}],"6pIK1":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$1ea5 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$1ea5.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -28004,66 +27929,6 @@ $RefreshReg$(_c, "EvaluationTable");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"7I8yO":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$1e7c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$1e7c.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$1e7c.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>ContributorsList);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-function ContributorsList({ contributors }) {
-    if (!contributors) return null;
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "bg-white p-4 rounded shadow mb-6",
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
-                className: "text-xl font-semibold mb-2",
-                children: "Contributors"
-            }, void 0, false, {
-                fileName: "src/components/ContributorsList.js",
-                lineNumber: 6,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                className: "list-disc ml-6",
-                children: contributors.map((c, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                        children: [
-                            c.login,
-                            " \u2014 ",
-                            c.contributions,
-                            " commits"
-                        ]
-                    }, i, true, {
-                        fileName: "src/components/ContributorsList.js",
-                        lineNumber: 9,
-                        columnNumber: 11
-                    }, this))
-            }, void 0, false, {
-                fileName: "src/components/ContributorsList.js",
-                lineNumber: 7,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/components/ContributorsList.js",
-        lineNumber: 5,
-        columnNumber: 5
-    }, this);
-}
-_c = ContributorsList;
-var _c;
-$RefreshReg$(_c, "ContributorsList");
-
-  $parcel$ReactRefreshHelpers$1e7c.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
 },{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"le3NI":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$ae5c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$ae5c.init();
@@ -28172,6 +28037,203 @@ var _c;
 $RefreshReg$(_c, "VivaQuestions");
 
   $parcel$ReactRefreshHelpers$bece.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"1t3vU":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$e656 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$e656.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$e656.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ContributorsChart);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+function ContributorsChart({ contributors }) {
+    if (!contributors) return null;
+    const max = Math.max(...contributors.map((c)=>c.contributions));
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "bg-white p-4 rounded shadow mb-6",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                className: "text-xl font-semibold mb-4",
+                children: "Contributors vs Commits"
+            }, void 0, false, {
+                fileName: "src/components/ContributorsChart.js",
+                lineNumber: 8,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "space-y-3",
+                children: contributors.map((c, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "flex justify-between text-sm mb-1",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        children: c.login
+                                    }, void 0, false, {
+                                        fileName: "src/components/ContributorsChart.js",
+                                        lineNumber: 16,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        children: c.contributions
+                                    }, void 0, false, {
+                                        fileName: "src/components/ContributorsChart.js",
+                                        lineNumber: 17,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/components/ContributorsChart.js",
+                                lineNumber: 15,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "w-full bg-gray-200 rounded h-3",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                    className: "bg-blue-600 h-3 rounded",
+                                    style: {
+                                        width: `${c.contributions / max * 100}%`
+                                    }
+                                }, void 0, false, {
+                                    fileName: "src/components/ContributorsChart.js",
+                                    lineNumber: 20,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "src/components/ContributorsChart.js",
+                                lineNumber: 19,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, i, true, {
+                        fileName: "src/components/ContributorsChart.js",
+                        lineNumber: 14,
+                        columnNumber: 11
+                    }, this))
+            }, void 0, false, {
+                fileName: "src/components/ContributorsChart.js",
+                lineNumber: 12,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/ContributorsChart.js",
+        lineNumber: 7,
+        columnNumber: 5
+    }, this);
+}
+_c = ContributorsChart;
+var _c;
+$RefreshReg$(_c, "ContributorsChart");
+
+  $parcel$ReactRefreshHelpers$e656.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"f6N0W":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$01ed = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$01ed.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$01ed.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>Gauge);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+function Gauge({ label, level, description }) {
+    const config = {
+        low: {
+            angle: "-60deg",
+            ring: "border-red-500",
+            needle: "bg-red-500",
+            text: "text-red-400"
+        },
+        medium: {
+            angle: "0deg",
+            ring: "border-yellow-400",
+            needle: "bg-yellow-400",
+            text: "text-yellow-400"
+        },
+        high: {
+            angle: "60deg",
+            ring: "border-green-400",
+            needle: "bg-green-400",
+            text: "text-green-400"
+        }
+    };
+    const c = config[level];
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "flex flex-col items-center gap-4",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+                className: `font-semibold ${c.text}`,
+                children: label
+            }, void 0, false, {
+                fileName: "src/components/Gauge.js",
+                lineNumber: 27,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "relative w-40 h-20 overflow-hidden",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: `absolute inset-0 rounded-full border-[10px] ${c.ring}`
+                    }, void 0, false, {
+                        fileName: "src/components/Gauge.js",
+                        lineNumber: 32,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: `
+            absolute bottom-0 left-1/2 
+            w-[2px] h-16 origin-bottom 
+            ${c.needle}
+            transition-transform duration-500
+          `,
+                        style: {
+                            transform: `rotate(${c.angle}) translateX(-50%)`
+                        }
+                    }, void 0, false, {
+                        fileName: "src/components/Gauge.js",
+                        lineNumber: 37,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/Gauge.js",
+                lineNumber: 30,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                className: "text-xs text-gray-400 text-center max-w-xs",
+                children: description
+            }, void 0, false, {
+                fileName: "src/components/Gauge.js",
+                lineNumber: 50,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/Gauge.js",
+        lineNumber: 26,
+        columnNumber: 5
+    }, this);
+}
+_c = Gauge;
+var _c;
+$RefreshReg$(_c, "Gauge");
+
+  $parcel$ReactRefreshHelpers$01ed.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
