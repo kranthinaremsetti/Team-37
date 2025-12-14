@@ -67,6 +67,7 @@ export async function analyzeRepo(req, res) {
       ascii_tree: asciiTree
       }
     };
+    console.log(workerJson);
 
     // 5️⃣ Send to FastAPI
     const friendReport = await sendToFriendBackend(workerJson);
@@ -82,6 +83,7 @@ export async function analyzeRepo(req, res) {
               contributorCount
             },
             contributors: contributorsList,
+            workerjson: workerJson,
             friend_report: friendReport
         });
 
