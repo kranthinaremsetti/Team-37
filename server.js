@@ -9,7 +9,7 @@ import reportRoutes from "./src/routes/reportRoutes.js";  // ✅ correct
 dotenv.config();
 
 mongoose
-  .connect("mongodb+srv://denny16satyala:Sudenak%4099@cluster0.scmnb70.mongodb.net/hackaton_analyzer")
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("📦 MongoDB Connected"))
   .catch(err => console.error("MongoDB Error:", err));
 
